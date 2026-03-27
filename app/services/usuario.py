@@ -72,3 +72,14 @@ class UsuarioService:
 
     def get_by_email(self, db: Session, email: str) -> Usuario:
         return self.repo.get_by_email(db, email)
+    
+    # ... (resto del código anterior igual)
+
+    def get_all(self, db: Session, skip: int = 0, limit: int = 100, actor_role: UserRole = None):
+        """
+        Lista todos los usuarios. Solo permitido para el rol ADMIN.
+        """
+        if actor_role != UserRole.ADMIN:
+            raise ForbiddenError("No tienes permisos para listar los usuarios")
+            
+        return self.repo.get_all(db, skip=skip, limit=limit)
